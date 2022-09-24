@@ -26,10 +26,18 @@ export default class Home extends Component {
       });
   }
 
+  onSearchChange = (event) => {
+    const searchString = event.target.value.toLowerCase();
+    this.setState({ searchString });
+  };
+
   render() {
-    const filteredMonsters = this.state.monsters.filter((monster) => {
-      return monster.name.toLowerCase().includes(this.state.searchString);
+    const { onSearchChange } = this;
+    const { monsters, searchString } = this.state;
+    const filteredMonsters = monsters.filter((monster) => {
+      return monster.name.toLowerCase().includes(searchString);
     });
+
     return (
       <>
         <main>
@@ -38,10 +46,7 @@ export default class Home extends Component {
             className="search-box"
             type="search"
             placeholder="..."
-            onChange={(event) => {
-              const searchString = event.target.value.toLowerCase();
-              this.setState({ searchString });
-            }}
+            onChange={onSearchChange}
           ></input>
           <div>
             {filteredMonsters.map((monster) => (
