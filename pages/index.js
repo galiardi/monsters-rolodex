@@ -5,6 +5,7 @@ export default class Home extends Component {
     super(props);
     this.state = {
       monsters: [],
+      filteredMonsters: [],
     };
     console.log("constructor");
   }
@@ -15,7 +16,7 @@ export default class Home extends Component {
       .then((response) => response.json())
       .then((users) => {
         this.setState(
-          { monsters: users }
+          { monsters: users, filteredMonsters: users }
           // () => {
           //   return {
           //     monsters: users,
@@ -34,8 +35,20 @@ export default class Home extends Component {
       <>
         <main>
           <div>Home</div>
+          <input
+            className="search-box"
+            type="search"
+            placeholder="..."
+            onChange={(event) => {
+              const filteredMonsters = this.state.monsters.filter((monster) => {
+                return monster.name.includes(event.target.value);
+              });
+              console.log(filteredMonsters);
+              this.setState({ filteredMonsters });
+            }}
+          ></input>
           <div>
-            {this.state.monsters.map((monster) => (
+            {this.state.filteredMonsters.map((monster) => (
               <p key={monster.id}>{monster.name}</p>
             ))}
           </div>
